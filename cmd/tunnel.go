@@ -3,7 +3,7 @@ package cmd
 import (
 	"context"
 
-	"github.com/loft-sh/devpod-provider-ecs/pkg/aws"
+	"github.com/loft-sh/devpod-provider-ecs/pkg/ecs"
 	"github.com/loft-sh/devpod-provider-ecs/pkg/options"
 	"github.com/loft-sh/log"
 	"github.com/spf13/cobra"
@@ -34,10 +34,15 @@ func NewTunnelCmd() *cobra.Command {
 }
 
 func (cmd *TunnelCmd) Run(ctx context.Context) error {
-	awsProvider, err := aws.NewProvider(ctx, log.Default.ErrorStreamOnly())
+	awsOptions, err := options.FromEnv()
 	if err != nil {
 		return err
 	}
 
-	return awsProvider.StartSession(cmd.Target, cmd.Port)
+	ecsProvider, err := ecs.NewProvider(ctx, awsOptions, log.Default.ErrorStreamOnly())
+	if err != nil {
+		return err
+	}
+
+	return ecsProvider.StartSession(cmd.Target, cmd.Port)
 }

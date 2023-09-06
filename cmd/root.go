@@ -12,9 +12,9 @@ import (
 
 // NewRootCmd returns a new root command
 func NewRootCmd() *cobra.Command {
-	awsCmd := &cobra.Command{
-		Use:           "devpod-provider-aws",
-		Short:         "aws Provider commands",
+	ecsCmd := &cobra.Command{
+		Use:           "devpod-provider-ecs",
+		Short:         "ECS Provider commands",
 		SilenceErrors: true,
 		SilenceUsage:  true,
 
@@ -25,7 +25,7 @@ func NewRootCmd() *cobra.Command {
 		},
 	}
 
-	return awsCmd
+	return ecsCmd
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -59,6 +59,12 @@ func BuildRoot() *cobra.Command {
 
 	rootCmd.AddCommand(NewEntrypointCmd())
 	rootCmd.AddCommand(NewTunnelCmd())
-	rootCmd.AddCommand(NewTestCmd())
+	rootCmd.AddCommand(NewFindCmd())
+	rootCmd.AddCommand(NewDeleteCmd())
+	rootCmd.AddCommand(NewStartCmd())
+	rootCmd.AddCommand(NewRunCmd())
+	rootCmd.AddCommand(NewCommandCmd())
+	rootCmd.AddCommand(NewStopCmd())
+	rootCmd.AddCommand(NewTargetArchitectureCmd())
 	return rootCmd
 }

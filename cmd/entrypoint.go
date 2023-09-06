@@ -1,7 +1,11 @@
 package cmd
 
 import (
+	"encoding/base64"
+	"encoding/json"
 	"fmt"
+	"os"
+	"os/exec"
 
 	"github.com/loft-sh/devpod-provider-ecs/pkg/options"
 	sshserver "github.com/loft-sh/devpod/pkg/ssh/server"
@@ -10,10 +14,8 @@ import (
 )
 
 type EntrypointCmd struct {
-	Entrypoint []string
-	Cmd        []string
-
-	User string
+	Entrypoint string
+	Cmd        string
 
 	Port int
 }
@@ -31,9 +33,8 @@ func NewEntrypointCmd() *cobra.Command {
 		},
 	}
 
-	cobraCmd.Flags().StringVar(&cmd.User, "user", "", "The container user to run the entrypoint with.")
-	cobraCmd.Flags().StringArrayVar(&cmd.Entrypoint, "entrypoint", []string{}, "The entrypoint to use.")
-	cobraCmd.Flags().StringArrayVar(&cmd.Cmd, "cmd", []string{}, "The cmds to use.")
+	cobraCmd.Flags().StringVar(&cmd.Entrypoint, "entrypoint", "", "Base64 encoded json string with an entrypoint to execute")
+	cobraCmd.Flags().StringVar(&cmd.Cmd, "cmd", "", "Base64 encoded json string with cmd to execute")
 	cobraCmd.Flags().IntVar(&cmd.Port, "port", options.DefaultSSHPort, "The default port to use for the ssh server")
 	return cobraCmd
 }
@@ -46,10 +47,64 @@ func (cmd *EntrypointCmd) Run() error {
 	}
 
 	log.Default.Infof("Listen and serve on: %s", address)
-	err = server.ListenAndServe()
+	go func() {
+		err = server.ListenAndServe()
+		if err != nil {
+			log.Default.Fatal("SSH server failed: %v", err)
+		} else {
+			log.Default.Fatal("SSH server ended unexpectedly")
+		}
+	}()
+
+	args := []string{}
+	if cmd.Entrypoint != "" {
+		entrypoint, err := decodeStrArray(cmd.Entrypoint)
+		if err != nil {
+			return fmt.Errorf("decode entrypoint: %w", err)
+		}
+
+		args = append(args, entrypoint...)
+	}
+	if cmd.Cmd != "" {
+		cmd, err := decodeStrArray(cmd.Cmd)
+		if err != nil {
+			return fmt.Errorf("decode cmd: %w", err)
+		}
+
+		args = append(args, cmd...)
+	}
+
+	// run entrypoint?
+	if len(args) == 0 {
+		// wait indefinitely
+		select {}
+		return nil
+	}
+
+	// run entrypoint
+	entrypointCmd := exec.Command(args[0], args[1:]...)
+	entrypointCmd.Stdout = os.Stdout
+	entrypointCmd.Stdin = os.Stdin
+	entrypointCmd.Stderr = os.Stderr
+	err = entrypointCmd.Run()
 	if err != nil {
 		return err
 	}
 
 	return nil
+}
+
+func decodeStrArray(payload string) ([]string, error) {
+	decoded, err := base64.StdEncoding.DecodeString(payload)
+	if err != nil {
+		return nil, err
+	}
+
+	strArr := []string{}
+	err = json.Unmarshal(decoded, &strArr)
+	if err != nil {
+		return nil, fmt.Errorf("parse %s: %w", string(decoded), err)
+	}
+
+	return strArr, nil
 }

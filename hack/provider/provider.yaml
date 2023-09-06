@@ -4,285 +4,85 @@ description: |-
   DevPod on ECS
 icon: https://devpod.sh/assets/aws.svg
 iconDark: https://devpod.sh/assets/aws_dark.svg
-optionGroups:
-  - options:
-      - AWS_ACCESS_KEY_ID
-      - AWS_SECRET_ACCESS_KEY
-      - AWS_PROFILE
-      - AWS_AMI
-      - AWS_DISK_SIZE
-      - AWS_INSTANCE_TYPE
-      - AWS_VPC_ID
-      - AWS_SUBNET_ID
-      - AWS_SECURITY_GROUP_ID
-      - AWS_INSTANCE_PROFILE_ARN
-      - AWS_INSTANCE_TAGS
-    name: "AWS options"
-    defaultVisible: false
-  - options:
-      - AGENT_PATH
-      - INACTIVITY_TIMEOUT
-      - INJECT_DOCKER_CREDENTIALS
-      - INJECT_GIT_CREDENTIALS
-    name: "Agent options"
-    defaultVisible: false
 options:
-  AWS_REGION:
-    suggestions:
-      - ap-south-1
-      - eu-north-1
-      - eu-west-3
-      - eu-west-2
-      - eu-west-1
-      - ap-northeast-3
-      - ap-northeast-2
-      - ap-northeast-1
-      - ca-central-1
-      - sa-east-1
-      - ap-southeast-1
-      - ap-southeast-2
-      - eu-central-1
-      - us-east-1
-      - us-east-2
-      - us-west-1
-      - us-west-2
-    description: The aws cloud region to create the VM in. E.g. us-west-1
+  CLUSTER_ID:
+    description: ECS Cluster ID either as ARN or ID
     required: true
-    command: printf "%s" "${AWS_DEFAULT_REGION:-$(aws configure get region)}" || true
-  AWS_ACCESS_KEY_ID:
-    description: The aws access key id
-    required: false
-    command: printf "%s" "${AWS_ACCESS_KEY_ID:-}"
-  AWS_SECRET_ACCESS_KEY:
-    description: The aws secret access key
-    required: false
-    command: printf "%s" "${AWS_SECRET_ACCESS_KEY:-}"
-  AWS_PROFILE:
-    description: The aws profile name to use
-    required: false
-    command: printf "%s" "${AWS_PROFILE:-default}"
-  AWS_DISK_SIZE:
-    description: The disk size to use.
-    default: "40"
-  AWS_VPC_ID:
-    description: The vpc id to use.
-    default: ""
-  AWS_SUBNET_ID:
-    description: The subnet id to use.
-    default: ""
-  AWS_SECURITY_GROUP_ID:
-    description: The security group id to use.
-    default: ""
-  AWS_AMI:
-    description: The disk image to use.
-    default: ""
-  AWS_INSTANCE_PROFILE_ARN:
-    description: The instance profile ARN to use
-    default: ""
-  AWS_INSTANCE_TAGS:
-    description: Additional flags to add to the instance in the form of "Name=XXX,Value=YYY Name=ZZZ,Value=WWW"
-    default: ""
-  AWS_INSTANCE_TYPE:
-    description: The machine type to use.
-    default: "c5.xlarge"
-    suggestions:
-      - t2.2xlarge
-      - t2.large
-      - t2.medium
-      - t2.nano
-      - t2.small
-      - t2.xlarge
-      - t3.2xlarge
-      - t3.large
-      - t3.medium
-      - t3.nano
-      - t3.small
-      - t3.xlarge
-      - t3a.2xlarge
-      - t3a.large
-      - t3a.medium
-      - t3a.nano
-      - t3a.small
-      - t3a.xlarge
-      - t4g.2xlarge
-      - t4g.large
-      - t4g.medium
-      - t4g.nano
-      - t4g.small
-      - t4g.xlarge
-      - c4.2xlarge
-      - c4.4xlarge
-      - c4.8xlarge
-      - c4.large
-      - c4.xlarge
-      - c5.12xlarge
-      - c5.18xlarge
-      - c5.24xlarge
-      - c5.2xlarge
-      - c5.4xlarge
-      - c5.9xlarge
-      - c5.large
-      - c5.xlarge
-      - c5a.12xlarge
-      - c5a.16xlarge
-      - c5a.24xlarge
-      - c5a.2xlarge
-      - c5a.4xlarge
-      - c5a.8xlarge
-      - c5a.large
-      - c5a.xlarge
-      - c6a.12xlarge
-      - c6a.16xlarge
-      - c6a.24xlarge
-      - c6a.2xlarge
-      - c6a.32xlarge
-      - c6a.48xlarge
-      - c6a.4xlarge
-      - c6a.8xlarge
-      - c6a.large
-      - c6a.xlarge
-      - c6g.12xlarge
-      - c6g.16xlarge
-      - c6g.2xlarge
-      - c6g.4xlarge
-      - c6g.8xlarge
-      - c6g.large
-      - c6g.medium
-      - c6g.xlarge
-      - c6i.12xlarge
-      - c6i.16xlarge
-      - c6i.24xlarge
-      - c6i.2xlarge
-      - c6i.32xlarge
-      - c6i.4xlarge
-      - c6i.8xlarge
-      - c6i.large
-      - c6i.xlarge
-      - c7g.12xlarge
-      - c7g.16xlarge
-      - c7g.2xlarge
-      - c7g.4xlarge
-      - c7g.8xlarge
-      - c7g.large
-      - c7g.medium
-      - c7g.xlarge
-      - cc2.8xlarge
-      - m4.10xlarge
-      - m4.16xlarge
-      - m4.2xlarge
-      - m4.4xlarge
-      - m4.large
-      - m4.xlarge
-      - m5.12xlarge
-      - m5.16xlarge
-      - m5.24xlarge
-      - m5.2xlarge
-      - m5.4xlarge
-      - m5.8xlarge
-      - m5.large
-      - m5.xlarge
-      - m5a.12xlarge
-      - m5a.16xlarge
-      - m5a.24xlarge
-      - m5a.2xlarge
-      - m5a.4xlarge
-      - m5a.8xlarge
-      - m5a.large
-      - m5a.xlarge
-      - m6a.12xlarge
-      - m6a.16xlarge
-      - m6a.24xlarge
-      - m6a.2xlarge
-      - m6a.32xlarge
-      - m6a.48xlarge
-      - m6a.4xlarge
-      - m6a.8xlarge
-      - m6a.large
-      - m6a.xlarge
-      - m6g.12xlarge
-      - m6g.16xlarge
-      - m6g.2xlarge
-      - m6g.4xlarge
-      - m6g.8xlarge
-      - m6g.large
-      - m6g.medium
-      - m6g.xlarge
-      - m6i.12xlarge
-      - m6i.16xlarge
-      - m6i.24xlarge
-      - m6i.2xlarge
-      - m6i.32xlarge
-      - m6i.4xlarge
-      - m6i.8xlarge
-      - m6i.large
-      - m6i.xlarge
-      - m7g.12xlarge
-      - m7g.16xlarge
-      - m7g.2xlarge
-      - m7g.4xlarge
-      - m7g.8xlarge
-      - m7g.large
-      - m7g.medium
-      - m7g.xlarge
-
-
-  INACTIVITY_TIMEOUT:
-    description: If defined, will automatically stop the VM after the inactivity period.
-    default: 10m
-  INJECT_GIT_CREDENTIALS:
-    description: "If DevPod should inject git credentials into the remote host."
-    default: "true"
-  INJECT_DOCKER_CREDENTIALS:
-    description: "If DevPod should inject docker credentials into the remote host."
-    default: "true"
-  AGENT_PATH:
-    description: The path where to inject the DevPod agent to.
-    default: /var/lib/toolbox/devpod
+  SUBNET_ID:
+    description: ECS Subnet ID either as ARN or ID
+    required: true
+  TASK_ROLE_ARN:
+    description: ECS Task Role ARN to use for the task definition with IAM permissions required for ECS Exec. For more information take a look at https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-iam-roles.html
+    required: true
+  EXECUTION_ROLE_ARN:
+    description: ECS Execution Role ARN to use for the task definition. For more information take a look at https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_execution_IAM_role.html
+    required: true
+  CLUSTER_ARCHITECTURE:
+    description: The cpu architecture of the cluster. Can be either amd64 or arm64. Defaults to arm64
+    default: "amd64"
+    enum:
+      - "amd64"
+      - "arm64"
+  TASK_CPU:
+    description: ECS Task cpu as a string. If using Fargate, make sure the combination with TASK_MEMORY is supported. E.g. '.5 vcpu'. Learn more at https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_definition_parameters.html#task_size
+    required: true
+    default: "2 vcpu"
+  TASK_MEMORY:
+    description: ECS Task memory as a string. If using Fargate, make sure the combination with TASK_CPU is supported. E.g. '1 gb'. Learn more at https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_definition_parameters.html#task_size
+    required: true
+    default: "4 gb"
+  LAUNCH_TYPE:
+    description: ECS Task Launch Type, which can be either FARGATE, ECS or EXTERNAL
+    default: "FARGATE"
+    required: true
+    enum:
+      - "FARGATE"
+      - "EC2"
+      - "EXTERNAL"
+  ASSIGN_PUBLIC_IP:
+    description: If the task should get a public ip assigned. For public subnets specify ENABLED and for private subnets specify DISABLED.
+    default: "ENABLED"
+    required: true
+    enum:
+      - "ENABLED"
+      - "DISABLED"
+  SECURITY_GROUP_ID:
+    description: ECS Security Group ID to attach to the network settings of the ECS task.
 agent:
-  path: ${AGENT_PATH}
-  inactivityTimeout: ${INACTIVITY_TIMEOUT}
-  injectGitCredentials: ${INJECT_GIT_CREDENTIALS}
-  injectDockerCredentials: ${INJECT_DOCKER_CREDENTIALS}
+  containerInactivityTimeout: ${INACTIVITY_TIMEOUT}
+  local: true
   binaries:
-    AWS_PROVIDER:
+    ECS_PROVIDER:
       - os: linux
         arch: amd64
-        path: https://github.com/loft-sh/devpod-provider-ecs/releases/download/##VERSION##/devpod-provider-aws-linux-amd64
+        path: https://github.com/loft-sh/devpod-provider-ecs/releases/download/##VERSION##/devpod-provider-ecs-linux-amd64
         checksum: ##CHECKSUM_LINUX_AMD64##
       - os: linux
         arch: arm64
-        path: https://github.com/loft-sh/devpod-provider-ecs/releases/download/##VERSION##/devpod-provider-aws-linux-arm64
+        path: https://github.com/loft-sh/devpod-provider-ecs/releases/download/##VERSION##/devpod-provider-ecs-linux-arm64
         checksum: ##CHECKSUM_LINUX_ARM64##
-  exec:
-    shutdown: |-
-      ${AWS_PROVIDER} stop || shutdown
-binaries:
-  AWS_PROVIDER:
-    - os: linux
-      arch: amd64
-      path: https://github.com/loft-sh/devpod-provider-ecs/releases/download/##VERSION##/devpod-provider-aws-linux-amd64
-      checksum: ##CHECKSUM_LINUX_AMD64##
-    - os: linux
-      arch: arm64
-      path: https://github.com/loft-sh/devpod-provider-ecs/releases/download/##VERSION##/devpod-provider-aws-linux-arm64
-      checksum: ##CHECKSUM_LINUX_ARM64##
-    - os: darwin
-      arch: amd64
-      path: https://github.com/loft-sh/devpod-provider-ecs/releases/download/##VERSION##/devpod-provider-aws-darwin-amd64
-      checksum: ##CHECKSUM_DARWIN_AMD64##
-    - os: darwin
-      arch: arm64
-      path: https://github.com/loft-sh/devpod-provider-ecs/releases/download/##VERSION##/devpod-provider-aws-darwin-arm64
-      checksum: ##CHECKSUM_DARWIN_ARM64##
-    - os: windows
-      arch: amd64
-      path: https://github.com/loft-sh/devpod-provider-ecs/releases/download/##VERSION##/devpod-provider-aws-windows-amd64.exe
-      checksum: ##CHECKSUM_WINDOWS_AMD64##
+      - os: darwin
+        arch: amd64
+        path: https://github.com/loft-sh/devpod-provider-ecs/releases/download/##VERSION##/devpod-provider-ecs-darwin-amd64
+        checksum: ##CHECKSUM_DARWIN_AMD64##
+      - os: darwin
+        arch: arm64
+        path: https://github.com/loft-sh/devpod-provider-ecs/releases/download/##VERSION##/devpod-provider-ecs-darwin-arm64
+        checksum: ##CHECKSUM_DARWIN_ARM64##
+      - os: windows
+        arch: amd64
+        path: https://github.com/loft-sh/devpod-provider-ecs/releases/download/##VERSION##/devpod-provider-ecs-windows-amd64.exe
+        checksum: ##CHECKSUM_WINDOWS_AMD64##
+  dockerlessIgnorePaths: '/managed-agents'
+  driver: custom
+  custom:
+    findDevContainer: ${ECS_PROVIDER} find
+    commandDevContainer: ${ECS_PROVIDER} command
+    startDevContainer: ${ECS_PROVIDER} start
+    stopDevContainer: ${ECS_PROVIDER} stop
+    runDevContainer: ${ECS_PROVIDER} run
+    deleteDevContainer: ${ECS_PROVIDER} delete
+    targetArchitecture: ${ECS_PROVIDER} target-architecture
 exec:
-  init: ${AWS_PROVIDER} init
-  command: ${AWS_PROVIDER} command
-  create: ${AWS_PROVIDER} create
-  delete: ${AWS_PROVIDER} delete
-  start: ${AWS_PROVIDER} start
-  stop: ${AWS_PROVIDER} stop
-  status: ${AWS_PROVIDER} status
+  command: |-
+    "${DEVPOD}" helper sh -c "${COMMAND}"
