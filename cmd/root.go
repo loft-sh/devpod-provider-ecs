@@ -48,7 +48,6 @@ func Execute() {
 
 			os.Exit(exitErr.ExitCode())
 		}
-
 		log.Default.Fatal(err)
 	}
 }
@@ -59,5 +58,7 @@ func BuildRoot() *cobra.Command {
 	rootCmd.Version = version.Version
 
 	rootCmd.AddCommand(NewEntrypointCmd())
+	rootCmd.AddCommand(NewTunnelCmd())
+	rootCmd.AddCommand(NewTestCmd())
 	return rootCmd
 }

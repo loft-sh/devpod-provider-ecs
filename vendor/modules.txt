@@ -21,6 +21,51 @@ github.com/alessio/shellescape
 # github.com/anmitsu/go-shlex v0.0.0-20200514113438-38f4b401e2be
 ## explicit; go 1.13
 github.com/anmitsu/go-shlex
+# github.com/aws/aws-sdk-go v1.43.16
+## explicit; go 1.11
+github.com/aws/aws-sdk-go/aws
+github.com/aws/aws-sdk-go/aws/awserr
+github.com/aws/aws-sdk-go/aws/awsutil
+github.com/aws/aws-sdk-go/aws/client
+github.com/aws/aws-sdk-go/aws/client/metadata
+github.com/aws/aws-sdk-go/aws/corehandlers
+github.com/aws/aws-sdk-go/aws/credentials
+github.com/aws/aws-sdk-go/aws/credentials/ec2rolecreds
+github.com/aws/aws-sdk-go/aws/credentials/endpointcreds
+github.com/aws/aws-sdk-go/aws/credentials/processcreds
+github.com/aws/aws-sdk-go/aws/credentials/ssocreds
+github.com/aws/aws-sdk-go/aws/credentials/stscreds
+github.com/aws/aws-sdk-go/aws/csm
+github.com/aws/aws-sdk-go/aws/defaults
+github.com/aws/aws-sdk-go/aws/ec2metadata
+github.com/aws/aws-sdk-go/aws/endpoints
+github.com/aws/aws-sdk-go/aws/request
+github.com/aws/aws-sdk-go/aws/session
+github.com/aws/aws-sdk-go/aws/signer/v4
+github.com/aws/aws-sdk-go/internal/context
+github.com/aws/aws-sdk-go/internal/ini
+github.com/aws/aws-sdk-go/internal/sdkio
+github.com/aws/aws-sdk-go/internal/sdkmath
+github.com/aws/aws-sdk-go/internal/sdkrand
+github.com/aws/aws-sdk-go/internal/sdkuri
+github.com/aws/aws-sdk-go/internal/shareddefaults
+github.com/aws/aws-sdk-go/internal/strings
+github.com/aws/aws-sdk-go/internal/sync/singleflight
+github.com/aws/aws-sdk-go/private/protocol
+github.com/aws/aws-sdk-go/private/protocol/json/jsonutil
+github.com/aws/aws-sdk-go/private/protocol/jsonrpc
+github.com/aws/aws-sdk-go/private/protocol/query
+github.com/aws/aws-sdk-go/private/protocol/query/queryutil
+github.com/aws/aws-sdk-go/private/protocol/rest
+github.com/aws/aws-sdk-go/private/protocol/restjson
+github.com/aws/aws-sdk-go/private/protocol/xml/xmlutil
+github.com/aws/aws-sdk-go/service/kms
+github.com/aws/aws-sdk-go/service/kms/kmsiface
+github.com/aws/aws-sdk-go/service/ssm
+github.com/aws/aws-sdk-go/service/sso
+github.com/aws/aws-sdk-go/service/sso/ssoiface
+github.com/aws/aws-sdk-go/service/sts
+github.com/aws/aws-sdk-go/service/sts/stsiface
 # github.com/aws/aws-sdk-go-v2 v1.21.0
 ## explicit; go 1.15
 github.com/aws/aws-sdk-go-v2
@@ -77,6 +122,11 @@ github.com/aws/aws-sdk-go-v2/service/ecs/types
 # github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.35
 ## explicit; go 1.15
 github.com/aws/aws-sdk-go-v2/service/internal/presigned-url
+# github.com/aws/aws-sdk-go-v2/service/ssm v1.37.5
+## explicit; go 1.15
+github.com/aws/aws-sdk-go-v2/service/ssm
+github.com/aws/aws-sdk-go-v2/service/ssm/internal/endpoints
+github.com/aws/aws-sdk-go-v2/service/ssm/types
 # github.com/aws/aws-sdk-go-v2/service/sso v1.12.10
 ## explicit; go 1.15
 github.com/aws/aws-sdk-go-v2/service/sso
@@ -92,6 +142,26 @@ github.com/aws/aws-sdk-go-v2/service/ssooidc/types
 github.com/aws/aws-sdk-go-v2/service/sts
 github.com/aws/aws-sdk-go-v2/service/sts/internal/endpoints
 github.com/aws/aws-sdk-go-v2/service/sts/types
+# github.com/aws/session-manager-plugin v0.0.0-20230808183647-dbfa0bfdb04b
+## explicit
+github.com/aws/session-manager-plugin/src/communicator
+github.com/aws/session-manager-plugin/src/communicator/mocks
+github.com/aws/session-manager-plugin/src/config
+github.com/aws/session-manager-plugin/src/datachannel
+github.com/aws/session-manager-plugin/src/encryption
+github.com/aws/session-manager-plugin/src/jsonutil
+github.com/aws/session-manager-plugin/src/log
+github.com/aws/session-manager-plugin/src/message
+github.com/aws/session-manager-plugin/src/retry
+github.com/aws/session-manager-plugin/src/sdkutil
+github.com/aws/session-manager-plugin/src/sdkutil/retryer
+github.com/aws/session-manager-plugin/src/service
+github.com/aws/session-manager-plugin/src/sessionmanagerplugin/session
+github.com/aws/session-manager-plugin/src/sessionmanagerplugin/session/portsession
+github.com/aws/session-manager-plugin/src/sessionmanagerplugin/session/sessionutil
+github.com/aws/session-manager-plugin/src/sessionmanagerplugin/session/shellsession
+github.com/aws/session-manager-plugin/src/version
+github.com/aws/session-manager-plugin/src/websocketutil
 # github.com/aws/smithy-go v1.14.2
 ## explicit; go 1.15
 github.com/aws/smithy-go
@@ -119,6 +189,13 @@ github.com/blang/semver
 # github.com/bmatcuk/doublestar/v4 v4.6.0
 ## explicit; go 1.16
 github.com/bmatcuk/doublestar/v4
+# github.com/cihub/seelog v0.0.0-20170130134532-f561c5e57575
+## explicit
+github.com/cihub/seelog
+github.com/cihub/seelog/archive
+github.com/cihub/seelog/archive/gzip
+github.com/cihub/seelog/archive/tar
+github.com/cihub/seelog/archive/zip
 # github.com/compose-spec/compose-go v1.11.0
 ## explicit; go 1.19
 github.com/compose-spec/compose-go/cli
@@ -137,6 +214,9 @@ github.com/containerd/typeurl
 # github.com/creack/pty v1.1.18
 ## explicit; go 1.13
 github.com/creack/pty
+# github.com/davecgh/go-spew v1.1.1
+## explicit
+github.com/davecgh/go-spew/spew
 # github.com/denisbrodbeck/machineid v1.0.1
 ## explicit
 github.com/denisbrodbeck/machineid
@@ -188,6 +268,12 @@ github.com/docker/go-connections/tlsconfig
 # github.com/docker/go-units v0.5.0
 ## explicit
 github.com/docker/go-units
+# github.com/eiannone/keyboard v0.0.0-20220611211555-0d226195f203
+## explicit; go 1.18
+github.com/eiannone/keyboard
+# github.com/fsnotify/fsnotify v1.6.0
+## explicit; go 1.16
+github.com/fsnotify/fsnotify
 # github.com/ghodss/yaml v1.0.0
 ## explicit
 github.com/ghodss/yaml
@@ -223,6 +309,9 @@ github.com/google/go-containerregistry/pkg/v1/types
 # github.com/google/uuid v1.3.0
 ## explicit
 github.com/google/uuid
+# github.com/gorilla/websocket v1.5.0
+## explicit; go 1.12
+github.com/gorilla/websocket
 # github.com/imdario/mergo v0.3.13
 ## explicit; go 1.13
 github.com/imdario/mergo
@@ -252,7 +341,7 @@ github.com/klauspost/compress/zstd/internal/xxhash
 github.com/kr/fs
 # github.com/kr/pretty v0.3.1
 ## explicit; go 1.12
-# github.com/loft-sh/devpod v0.3.8-0.20230904150015-66224ff68e54
+# github.com/loft-sh/devpod v0.3.8-0.20230906125659-9730aac9d3a8
 ## explicit; go 1.20
 github.com/loft-sh/devpod/cmd/flags
 github.com/loft-sh/devpod/pkg/command
@@ -273,7 +362,9 @@ github.com/loft-sh/devpod/pkg/http
 github.com/loft-sh/devpod/pkg/id
 github.com/loft-sh/devpod/pkg/image
 github.com/loft-sh/devpod/pkg/provider
+github.com/loft-sh/devpod/pkg/ssh
 github.com/loft-sh/devpod/pkg/ssh/server
+github.com/loft-sh/devpod/pkg/stdio
 github.com/loft-sh/devpod/pkg/telemetry
 github.com/loft-sh/devpod/pkg/telemetry/serviceaccount
 github.com/loft-sh/devpod/pkg/telemetry/types
@@ -333,6 +424,9 @@ github.com/pkg/errors
 ## explicit; go 1.15
 github.com/pkg/sftp
 github.com/pkg/sftp/internal/encoding/ssh/filexfer
+# github.com/pmezard/go-difflib v1.0.0
+## explicit
+github.com/pmezard/go-difflib/difflib
 # github.com/sirupsen/logrus v1.9.3
 ## explicit; go 1.13
 github.com/sirupsen/logrus
@@ -342,11 +436,19 @@ github.com/spf13/cobra
 # github.com/spf13/pflag v1.0.5
 ## explicit; go 1.12
 github.com/spf13/pflag
+# github.com/stretchr/objx v0.5.0
+## explicit; go 1.12
+github.com/stretchr/objx
 # github.com/stretchr/testify v1.8.4
 ## explicit; go 1.20
+github.com/stretchr/testify/assert
+github.com/stretchr/testify/mock
 # github.com/tidwall/jsonc v0.3.2
 ## explicit; go 1.16
 github.com/tidwall/jsonc
+# github.com/twinj/uuid v0.0.0-20151029044442-89173bcdda19
+## explicit
+github.com/twinj/uuid
 # github.com/xeipuuv/gojsonpointer v0.0.0-20180127040702-4e3ac2762d5f
 ## explicit
 github.com/xeipuuv/gojsonpointer
@@ -356,6 +458,9 @@ github.com/xeipuuv/gojsonreference
 # github.com/xeipuuv/gojsonschema v1.2.0
 ## explicit
 github.com/xeipuuv/gojsonschema
+# github.com/xtaci/smux v1.5.24
+## explicit; go 1.13
+github.com/xtaci/smux
 # golang.org/x/crypto v0.12.0
 ## explicit; go 1.17
 golang.org/x/crypto/blowfish
@@ -368,6 +473,7 @@ golang.org/x/crypto/internal/poly1305
 golang.org/x/crypto/pbkdf2
 golang.org/x/crypto/ssh
 golang.org/x/crypto/ssh/internal/bcrypt_pbkdf
+golang.org/x/crypto/ssh/terminal
 # golang.org/x/mod v0.9.0
 ## explicit; go 1.17
 golang.org/x/mod/semver
@@ -458,3 +564,6 @@ gopkg.in/square/go-jose.v2/jwt
 # gopkg.in/yaml.v2 v2.4.0
 ## explicit; go 1.15
 gopkg.in/yaml.v2
+# gopkg.in/yaml.v3 v3.0.1
+## explicit
+gopkg.in/yaml.v3

@@ -18,7 +18,7 @@ type EntrypointCmd struct {
 	Port int
 }
 
-// NewEntrypointCmd returns a new start command
+// NewEntrypointCmd returns a new command
 func NewEntrypointCmd() *cobra.Command {
 	cmd := &EntrypointCmd{}
 	cobraCmd := &cobra.Command{
