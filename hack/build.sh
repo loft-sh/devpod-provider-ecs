@@ -20,7 +20,7 @@ if [[ "$(pwd)" != "${PROVIDER_ROOT}" ]]; then
 fi
 
 GO_BUILD_CMD="go build"
-GO_BUILD_LDFLAGS="-s -w"
+GO_BUILD_LDFLAGS="-s -w -X github.com/loft-sh/devpod-provider-ecs/pkg/version.Version=$RELEASE_VERSION"
 
 if [[ -z "${PROVIDER_BUILD_PLATFORMS}" ]]; then
     PROVIDER_BUILD_PLATFORMS="linux windows darwin"

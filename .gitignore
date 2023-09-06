@@ -2,3 +2,4 @@ env
 devpod-provider-aws
 release
 /test
+/.idea

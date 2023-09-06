@@ -4,6 +4,7 @@ import (
 	"os"
 	"os/exec"
 
+	"github.com/loft-sh/devpod-provider-ecs/pkg/version"
 	"github.com/loft-sh/log"
 	"github.com/spf13/cobra"
 	"golang.org/x/crypto/ssh"
@@ -55,6 +56,7 @@ func Execute() {
 // BuildRoot creates a new root command from the
 func BuildRoot() *cobra.Command {
 	rootCmd := NewRootCmd()
+	rootCmd.Version = version.Version
 
 	rootCmd.AddCommand(NewEntrypointCmd())
 	return rootCmd

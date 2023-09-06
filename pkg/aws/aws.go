@@ -12,6 +12,7 @@ import (
 	awsConfig "github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/ecs"
 	"github.com/aws/aws-sdk-go-v2/service/ecs/types"
+	"github.com/loft-sh/devpod-provider-ecs/pkg/inject"
 	"github.com/loft-sh/devpod-provider-ecs/pkg/options"
 	"github.com/loft-sh/devpod/pkg/devcontainer/config"
 	"github.com/loft-sh/devpod/pkg/driver"
@@ -324,8 +325,14 @@ func getContainerDefinition(runOptions *driver.RunOptions) (types.ContainerDefin
 			})
 		}
 	}
-	retDefinition.EntryPoint = []string{runOptions.Entrypoint}
-	retDefinition.Command = runOptions.Cmd
+
+	entrypoint, cmd, err := inject.GetContainerEntrypoint([]string{runOptions.Entrypoint}, runOptions.Cmd)
+	if err != nil {
+		return types.ContainerDefinition{}, err
+	}
+
+	retDefinition.EntryPoint = entrypoint
+	retDefinition.Command = cmd
 	if runOptions.User != "" {
 		retDefinition.User = &runOptions.User
 	}
