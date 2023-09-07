@@ -64,6 +64,11 @@ func (p *EcsProvider) StopTask(ctx context.Context, workspaceId string) error {
 	}
 
 	// stop the task
+	return p.stopTask(ctx, workspaceId)
+}
+
+func (p *EcsProvider) stopTask(ctx context.Context, workspaceId string) error {
+	// stop the task
 	task, err := p.getTaskID(ctx, workspaceId)
 	if err != nil {
 		return err
@@ -90,7 +95,7 @@ func (p *EcsProvider) RunTask(ctx context.Context, workspaceId string, runOption
 
 	err = p.startTask(ctx, workspaceId)
 	if err != nil {
-		_ = p.StopTask(ctx, workspaceId)
+		_ = p.stopTask(ctx, workspaceId)
 		_ = p.deleteTaskDefinition(ctx, workspaceId)
 		return err
 	}
@@ -144,7 +149,7 @@ func (p *EcsProvider) FindTask(ctx context.Context, workspaceId string) (*config
 
 func (p *EcsProvider) DeleteTask(ctx context.Context, workspaceId string) error {
 	// stop the task
-	err := p.StopTask(ctx, workspaceId)
+	err := p.stopTask(ctx, workspaceId)
 	if err != nil {
 		return err
 	}
