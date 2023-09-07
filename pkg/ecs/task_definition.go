@@ -176,6 +176,7 @@ func (p *EcsProvider) deleteTaskDefinition(ctx context.Context, workspaceId stri
 		}
 
 		// delete existing task definitions
+		p.Log.Info("Deleting task definition...")
 		output, err := p.client.DeleteTaskDefinitions(ctx, &ecs.DeleteTaskDefinitionsInput{
 			TaskDefinitions: output.TaskDefinitionArns,
 		})

@@ -69,6 +69,7 @@ func (p *EcsProvider) StopTask(ctx context.Context, workspaceId string) error {
 		return err
 	} else if task != nil {
 		// delete the task
+		p.Log.Infof("Stopping task...")
 		_, err = p.client.StopTask(ctx, &ecs.StopTaskInput{
 			Task:    task.TaskArn,
 			Cluster: options.Ptr(p.Config.ClusterID),
@@ -221,6 +222,7 @@ func (p *EcsProvider) startTask(ctx context.Context, workspaceId string) error {
 		securityGroups = append(securityGroups, p.Config.SecurityGroupID)
 	}
 
+	p.Log.Infof("Running Task...")
 	taskOutput, err := p.client.RunTask(ctx, &ecs.RunTaskInput{
 		TaskDefinition:       options.Ptr(taskDefinitionID),
 		Cluster:              options.Ptr(p.Config.ClusterID),
@@ -246,6 +248,7 @@ func (p *EcsProvider) startTask(ctx context.Context, workspaceId string) error {
 	timeout := time.Minute * 5
 	now := time.Now()
 	for time.Since(now) < timeout {
+		p.Log.Infof("Waiting for Task to become running...")
 		task, err := p.getTaskID(ctx, workspaceId)
 		if err != nil {
 			return fmt.Errorf("error retrieving task: %w", err)
@@ -257,6 +260,7 @@ func (p *EcsProvider) startTask(ctx context.Context, workspaceId string) error {
 
 				return fmt.Errorf("run task failed, task was stopped without a reason")
 			} else if task.LastStatus != nil && strings.ToLower(*task.LastStatus) == "running" {
+				p.Log.Info("Task successfully started")
 				return nil
 			}
 		}
