@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"sort"
 	"strings"
+	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	awsConfig "github.com/aws/aws-sdk-go-v2/config"
@@ -61,7 +62,7 @@ func (p *EcsProvider) StopTask(ctx context.Context, workspaceId string) error {
 	if p.Config.LaunchType == string(types.LaunchTypeFargate) {
 		return nil
 	}
-	
+
 	// stop the task
 	task, err := p.getTaskID(ctx, workspaceId)
 	if err != nil {
@@ -88,6 +89,7 @@ func (p *EcsProvider) RunTask(ctx context.Context, workspaceId string, runOption
 
 	err = p.startTask(ctx, workspaceId)
 	if err != nil {
+		_ = p.StopTask(ctx, workspaceId)
 		_ = p.deleteTaskDefinition(ctx, workspaceId)
 		return err
 	}
@@ -168,21 +170,26 @@ func (p *EcsProvider) getTaskID(ctx context.Context, workspaceId string) (*types
 		return nil, fmt.Errorf("list running tasks: %w", err)
 	}
 
-	stoppedTaskArns, err := p.client.ListTasks(ctx, &ecs.ListTasksInput{
-		Cluster:       options.Ptr(p.Config.ClusterID),
-		Family:        options.Ptr("devpod-" + workspaceId),
-		DesiredStatus: types.DesiredStatusStopped,
-		MaxResults:    options.Ptr(int32(10)),
-	})
-	if err != nil {
-		return nil, fmt.Errorf("list stopped tasks: %w", err)
-	}
+	// search stopped if there is no desired running
+	taskArns := runningTaskArns.TaskArns
+	if len(taskArns) == 0 {
+		stoppedTaskArns, err := p.client.ListTasks(ctx, &ecs.ListTasksInput{
+			Cluster:       options.Ptr(p.Config.ClusterID),
+			Family:        options.Ptr("devpod-" + workspaceId),
+			DesiredStatus: types.DesiredStatusStopped,
+			MaxResults:    options.Ptr(int32(10)),
+		})
+		if err != nil {
+			return nil, fmt.Errorf("list stopped tasks: %w", err)
+		}
 
-	taskArns := append(runningTaskArns.TaskArns, stoppedTaskArns.TaskArns...)
+		taskArns = stoppedTaskArns.TaskArns
+	}
 	if len(taskArns) == 0 {
 		return nil, nil
 	}
 
+	// get tasks
 	tasks, err := p.client.DescribeTasks(ctx, &ecs.DescribeTasksInput{
 		Tasks:   taskArns,
 		Cluster: options.Ptr(p.Config.ClusterID),
@@ -235,5 +242,27 @@ func (p *EcsProvider) startTask(ctx context.Context, workspaceId string) error {
 		return fmt.Errorf("run task failure: %w", errors.New(*taskOutput.Failures[0].Reason))
 	}
 
-	return nil
+	// wait for task to come up
+	timeout := time.Minute * 5
+	now := time.Now()
+	for time.Since(now) < timeout {
+		task, err := p.getTaskID(ctx, workspaceId)
+		if err != nil {
+			return fmt.Errorf("error retrieving task: %w", err)
+		} else if task != nil {
+			if task.DesiredStatus != nil && strings.ToLower(*task.DesiredStatus) != "running" {
+				if task.StoppedReason != nil {
+					return fmt.Errorf("run task failed, task was stopped: %s", *task.StoppedReason)
+				}
+
+				return fmt.Errorf("run task failed, task was stopped without a reason")
+			} else if task.LastStatus != nil && strings.ToLower(*task.LastStatus) == "running" {
+				return nil
+			}
+		}
+
+		time.Sleep(time.Second * 5)
+	}
+
+	return fmt.Errorf("run task failed, timed out waiting for task to be running")
 }
