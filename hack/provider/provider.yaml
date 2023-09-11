@@ -73,7 +73,10 @@ agent:
         arch: amd64
         path: https://github.com/loft-sh/devpod-provider-ecs/releases/download/##VERSION##/devpod-provider-ecs-windows-amd64.exe
         checksum: ##CHECKSUM_WINDOWS_AMD64##
+  # Still in here for backwards compatibility
   dockerlessIgnorePaths: '/managed-agents'
+  dockerless:
+    ignorePaths: '/managed-agents'
   driver: custom
   custom:
     findDevContainer: ${ECS_PROVIDER} find
