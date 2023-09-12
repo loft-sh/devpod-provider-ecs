@@ -5,6 +5,10 @@ description: |-
 icon: https://devpod.sh/assets/aws.svg
 iconDark: https://devpod.sh/assets/aws_dark.svg
 options:
+  AWS_PROFILE:
+    description: The aws profile name to use
+    required: false
+    command: printf "%s" "${AWS_PROFILE:-default}"
   CLUSTER_ID:
     description: ECS Cluster ID either as ARN or ID
     required: true
