@@ -29,6 +29,21 @@ func (p *EcsProvider) registerTaskDefinition(ctx context.Context, workspaceId st
 		return fmt.Errorf("get container definition: %w", err)
 	}
 
+	// make sure we have a value for the role arn
+	if p.Config.TaskRoleARN == "" || p.Config.ExecutionRoleARN == "" {
+		roleArn, err := p.createIamRole(ctx)
+		if err != nil {
+			return err
+		}
+
+		if p.Config.TaskRoleARN == "" {
+			p.Config.TaskRoleARN = roleArn
+		}
+		if p.Config.ExecutionRoleARN == "" {
+			p.Config.ExecutionRoleARN = roleArn
+		}
+	}
+
 	// create task definition
 	taskDefinition := &ecs.RegisterTaskDefinitionInput{
 		ContainerDefinitions: []types.ContainerDefinition{

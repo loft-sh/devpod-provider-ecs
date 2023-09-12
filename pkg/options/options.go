@@ -44,14 +44,6 @@ func FromEnv() (*Options, error) {
 	if err != nil {
 		return nil, err
 	}
-	retOptions.TaskRoleARN, err = fromEnvOrError("TASK_ROLE_ARN")
-	if err != nil {
-		return nil, err
-	}
-	retOptions.ExecutionRoleARN, err = fromEnvOrError("EXECUTION_ROLE_ARN")
-	if err != nil {
-		return nil, err
-	}
 	retOptions.ClusterArchitecture, err = fromEnvOrError("CLUSTER_ARCHITECTURE")
 	if err != nil {
 		return nil, err
@@ -75,6 +67,8 @@ func FromEnv() (*Options, error) {
 
 	// optional
 	retOptions.SecurityGroupID = os.Getenv("SECURITY_GROUP_ID")
+	retOptions.TaskRoleARN = os.Getenv("TASK_ROLE_ARN")
+	retOptions.ExecutionRoleARN = os.Getenv("EXECUTION_ROLE_ARN")
 
 	return retOptions, nil
 }

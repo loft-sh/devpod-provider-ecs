@@ -5,22 +5,19 @@ description: |-
 icon: https://devpod.sh/assets/aws.svg
 iconDark: https://devpod.sh/assets/aws_dark.svg
 options:
-  AWS_PROFILE:
-    description: The aws profile name to use
-    required: false
-    command: printf "%s" "${AWS_PROFILE:-default}"
   CLUSTER_ID:
     description: ECS Cluster ID either as ARN or ID
     required: true
   SUBNET_ID:
     description: ECS Subnet ID either as ARN or ID to run the tasks in. This can either be a private subnet with a NAT Gateway or a Public Subnet. Depending on the type of the subnet you will need to set ASSIGN_PUBLIC_IP accordingly
     required: true
+  AWS_PROFILE:
+    description: The aws profile name to use
+    command: printf "%s" "${AWS_PROFILE:-default}"
   TASK_ROLE_ARN:
-    description: ECS Task Role ARN to use for the task definition with IAM permissions required for ECS Exec. For more information take a look at https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-iam-roles.html
-    required: true
+    description: ECS Task Role ARN to use for the task definition with IAM permissions required for ECS Exec. If unset, DevPod will try to create a new role. For more information take a look at https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-iam-roles.html
   EXECUTION_ROLE_ARN:
-    description: ECS Execution Role ARN to use for the task definition. For more information take a look at https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_execution_IAM_role.html
-    required: true
+    description: ECS Execution Role ARN to use for the task definition. If unset, DevPod will try to create a new role. For more information take a look at https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_execution_IAM_role.html
   CLUSTER_ARCHITECTURE:
     description: The cpu architecture of the cluster. Can be either amd64 or arm64. Defaults to amd64
     default: "amd64"
@@ -29,16 +26,13 @@ options:
       - "arm64"
   TASK_CPU:
     description: ECS Task cpu as a string. If using Fargate, make sure the combination with TASK_MEMORY is supported. E.g. '.5 vcpu'. Learn more at https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_definition_parameters.html#task_size
-    required: true
     default: "2 vcpu"
   TASK_MEMORY:
     description: ECS Task memory as a string. If using Fargate, make sure the combination with TASK_CPU is supported. E.g. '1 gb'. Learn more at https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_definition_parameters.html#task_size
-    required: true
     default: "4 gb"
   LAUNCH_TYPE:
     description: ECS Task Launch Type, which can be either FARGATE, ECS or EXTERNAL
     default: "FARGATE"
-    required: true
     enum:
       - "FARGATE"
       - "EC2"
@@ -46,7 +40,6 @@ options:
   ASSIGN_PUBLIC_IP:
     description: If the task should get a public ip assigned. For public subnets specify ENABLED and for private subnets specify DISABLED.
     default: "ENABLED"
-    required: true
     enum:
       - "ENABLED"
       - "DISABLED"
